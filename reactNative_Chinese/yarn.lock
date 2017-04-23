@@ -2941,6 +2941,14 @@ react-devtools-core@^2.0.8:
     cross-env "^3.1.4"
     ws "^2.0.3"
 
+react-native-signature-capture@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/react-native-signature-capture/-/react-native-signature-capture-0.4.5.tgz#eea3cffdf7765986893f322854026cc74b89586d"
+
+react-native-storage@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-storage/-/react-native-storage-0.1.5.tgz#91d77560e41cc9e62d587b55a21b3d6ebaba5599"
+
 react-native@0.43.0:
   version "0.43.0"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.43.0.tgz#782b3e3918590d36f9b362b80d72341e8468c3aa"

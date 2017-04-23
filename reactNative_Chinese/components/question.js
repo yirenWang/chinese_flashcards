@@ -15,6 +15,7 @@ const {
     TouchableHighlight
 } = ReactNative;
 
+import {storage} from './storageInit';
 import SignatureCapture from 'react-native-signature-capture';
 
 function getRandomInt(min, max) {
@@ -29,30 +30,52 @@ class Question extends Component {
         this.state = {question: "", correct_answers: 0};
     }
 
+    getQuestion(){
+      const that = this;
+      return storage.getIdsForKey(`HSK${that.props.passProps.hsk_level}`);
+    }
+
     componentWillMount(){
         switch (this.props.passProps.hsk_level){
-            case 1:
-                this.setState({question: require(`../data/HSK1.json`).words[getRandomInt(0,146)]});
-                break;
-            case 2:
-                this.setState({question: require(`../data/HSK2.json`).words[getRandomInt(0,146)]});
-                break;
-            case 3:
-                this.setState({question: require(`../data/HSK3.json`).words[getRandomInt(0,298)]});
-                break;
-            case 4:
-                this.setState({question: require(`../data/HSK4.json`).words[getRandomInt(0,585)]});
-                break;
-            case 5:
-                this.setState({question: require(`../data/HSK5.json`).words[getRandomInt(0,1311)]});
-                break;
-            case 6:
-                this.setState({question: require(`../data/HSK6.json`).words[getRandomInt(0,2510)]});
-                break;
+          case 1:
+            this.getQuestion()
+              .then((ids) => {
+                this.setState({question: require(`../data/HSK1.json`).words[getRandomInt(0,ids.length)]});
+              });
+            break;
+          case 2:
+            this.getQuestion()
+              .then((ids) => {
+                this.setState({question: require(`../data/HSK2.json`).words[getRandomInt(0,ids.length)]});
+              });
+            break;
+          case 3:
+            this.getQuestion()
+              .then((ids) => {
+                this.setState({question: require(`../data/HSK3.json`).words[getRandomInt(0,ids.length)]});
+              });
+            break;
+          case 4:
+            this.getQuestion()
+              .then((ids) => {
+                this.setState({question: require(`../data/HSK4.json`).words[getRandomInt(0,ids.length)]});
+              });
+            break;
+          case 5:
+            this.getQuestion()
+              .then((ids) => {
+                this.setState({question: require(`../data/HSK5.json`).words[getRandomInt(0,ids.length)]});
+              });
+            break;
+          case 6:
+            this.getQuestion()
+              .then((ids) => {
+                this.setState({question: require(`../data/HSK6.json`).words[getRandomInt(0,ids.length)]});
+              });
+            break;
         }
     }
 
-    component
     _navigate(imageBase64){
         const that = this;
         this.props.navigator.push({
