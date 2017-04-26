@@ -1,54 +1,53 @@
 const React = require('react');
 const ReactNative = require('react-native');
 
-const {Component} = React;
+const { Component } = React;
 
-import {storage} from "./storageInit";
+import { storage } from './storageInit';
 
-const {
-    View,
-    Button,
-} = ReactNative;
+const { View, Button } = ReactNative;
 
 class Home extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.checkDataLoadedAndSave = this.checkDataLoadedAndSave.bind(this);
   }
 
   saveWords(words, hskLevel) {
-    return words.forEach((word) => {
+    return words.forEach(word => {
       // load the weight table
       // add the ids corresponding to each HSK level
       storage.save({
-        key:`HSK${hskLevel}`,
+        key: `HSK${hskLevel}`,
         id: word.id,
-        rawData: {acquired: false}
-      })
-    })
+        rawData: { acquired: false },
+      });
+    });
   }
 
-  checkDataLoadedAndSave(words, hskLevel){
-    return storage.load({
-      key: `HSK${hskLevel}`,
-      id: "loaded"
-    })
+  checkDataLoadedAndSave(words, hskLevel) {
+    return storage
+      .load({
+        key: `HSK${hskLevel}`,
+        id: 'loaded',
+      })
       .then()
-      .catch((err) => {
-        if(err.name === 'NotFoundError'){
+      .catch(err => {
+        if (err.name === 'NotFoundError') {
           this.saveWords(words, hskLevel);
         }
-      })
+      });
   }
 
-  _navigator(hsk_level){
+  _navigator(hsk_level) {
     let words = {};
-    switch(hsk_level){
+    switch (hsk_level) {
       case 1:
         words = require('../data/HSK1.json').words;
-        this.checkDataLoadedAndSave(words, hsk_level)
-          .catch(err => console.warn(err));
+        this.checkDataLoadedAndSave(words, hsk_level).catch(err =>
+          console.warn(err)
+        );
         break;
       case 2:
         words = require(`../data/HSK2.json`).words;
@@ -75,21 +74,21 @@ class Home extends Component {
       passProps: {
         hsk_level: hsk_level,
       },
-    })
+    });
   }
 
-    render(){
-        return(
-            <View>
-                <Button onPress={() => this._navigator(1)} title="HSK1"/>
-                <Button onPress={() => this._navigator(2)} title="HSK2"/>
-                <Button onPress={() => this._navigator(3)} title="HSK3"/>
-                <Button onPress={() => this._navigator(4)} title="HSK4"/>
-                <Button onPress={() => this._navigator(5)} title="HSK5"/>
-                <Button onPress={() => this._navigator(6)} title="HSK6"/>
-            </View>
-        );
-    }
+  render() {
+    return (
+      <View>
+        <Button onPress={() => this._navigator(1)} title="HSK1" />
+        <Button onPress={() => this._navigator(2)} title="HSK2" />
+        <Button onPress={() => this._navigator(3)} title="HSK3" />
+        <Button onPress={() => this._navigator(4)} title="HSK4" />
+        <Button onPress={() => this._navigator(5)} title="HSK5" />
+        <Button onPress={() => this._navigator(6)} title="HSK6" />
+      </View>
+    );
+  }
 }
 
 module.exports = { Home };

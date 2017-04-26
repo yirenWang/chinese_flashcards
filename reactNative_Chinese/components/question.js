@@ -1,21 +1,11 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-
-const React= require('react');
+const React = require('react');
 const ReactNative = require('react-native');
 
 const { Component } = React;
 
-const {
-    StyleSheet,
-    Text,
-    View,
-    TouchableHighlight
-} = ReactNative;
+const { StyleSheet, Text, View, TouchableHighlight } = ReactNative;
 
-import {storage} from './storageInit';
+import { storage } from './storageInit';
 import SignatureCapture from 'react-native-signature-capture';
 
 function getRandomInt(min, max) {
@@ -25,74 +15,92 @@ function getRandomInt(min, max) {
 }
 
 class Question extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state = {question: "", correct_answers: 0};
+        this.state = { question: '', correct_answers: 0 };
     }
 
-    getQuestion(){
-      const that = this;
-      return storage.getIdsForKey(`HSK${that.props.passProps.hsk_level}`);
+    getQuestion() {
+        const that = this;
+        return storage.getIdsForKey(`HSK${that.props.passProps.hsk_level}`);
     }
 
-    componentWillMount(){
-        switch (this.props.passProps.hsk_level){
-          case 1:
-            this.getQuestion()
-              .then((ids) => {
-                this.setState({question: require(`../data/HSK1.json`).words[getRandomInt(0,ids.length)]});
-              });
-            break;
-          case 2:
-            this.getQuestion()
-              .then((ids) => {
-                this.setState({question: require(`../data/HSK2.json`).words[getRandomInt(0,ids.length)]});
-              });
-            break;
-          case 3:
-            this.getQuestion()
-              .then((ids) => {
-                this.setState({question: require(`../data/HSK3.json`).words[getRandomInt(0,ids.length)]});
-              });
-            break;
-          case 4:
-            this.getQuestion()
-              .then((ids) => {
-                this.setState({question: require(`../data/HSK4.json`).words[getRandomInt(0,ids.length)]});
-              });
-            break;
-          case 5:
-            this.getQuestion()
-              .then((ids) => {
-                this.setState({question: require(`../data/HSK5.json`).words[getRandomInt(0,ids.length)]});
-              });
-            break;
-          case 6:
-            this.getQuestion()
-              .then((ids) => {
-                this.setState({question: require(`../data/HSK6.json`).words[getRandomInt(0,ids.length)]});
-              });
-            break;
+    componentWillMount() {
+        switch (this.props.passProps.hsk_level) {
+            case 1:
+                this.getQuestion().then(ids => {
+                    this.setState({
+                        question: require(`../data/HSK1.json`).words[
+                            getRandomInt(0, ids.length)
+                        ],
+                    });
+                });
+                break;
+            case 2:
+                this.getQuestion().then(ids => {
+                    this.setState({
+                        question: require(`../data/HSK2.json`).words[
+                            getRandomInt(0, ids.length)
+                        ],
+                    });
+                });
+                break;
+            case 3:
+                this.getQuestion().then(ids => {
+                    this.setState({
+                        question: require(`../data/HSK3.json`).words[
+                            getRandomInt(0, ids.length)
+                        ],
+                    });
+                });
+                break;
+            case 4:
+                this.getQuestion().then(ids => {
+                    this.setState({
+                        question: require(`../data/HSK4.json`).words[
+                            getRandomInt(0, ids.length)
+                        ],
+                    });
+                });
+                break;
+            case 5:
+                this.getQuestion().then(ids => {
+                    this.setState({
+                        question: require(`../data/HSK5.json`).words[
+                            getRandomInt(0, ids.length)
+                        ],
+                    });
+                });
+                break;
+            case 6:
+                this.getQuestion().then(ids => {
+                    this.setState({
+                        question: require(`../data/HSK6.json`).words[
+                            getRandomInt(0, ids.length)
+                        ],
+                    });
+                });
+                break;
         }
     }
 
-    _navigate(imageBase64){
+    _navigate(imageBase64) {
         const that = this;
         this.props.navigator.push({
             id: 'answer',
             passProps: {
                 imageBase64: imageBase64,
                 question: that.state.question,
-            }
-        })
+            },
+        });
     }
 
     saveSign() {
-        this.refs["sign"].saveImage();
+        this.refs['sign'].saveImage();
     }
 
     resetSign() {
-        this.refs["sign"].resetImage();
+        this.refs['sign'].resetImage();
     }
 
     _onSaveEvent(result) {
@@ -104,36 +112,53 @@ class Question extends Component {
 
     _onDragEvent() {
         // This callback will be called when the user enters signature
-        console.log("dragged");
+        console.log('dragged');
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.resetSign();
     }
 
     render() {
         return (
-            <View style={{ flex: 1, flexDirection: "column" }}>
-                <Text style={{alignItems:"center",justifyContent:"center"}}> {this.state.question._definition} </Text>
-                <Text style={{alignItems:"center",justifyContent:"center"}}> {this.state.question._pinyin} </Text>
+            <View style={{ flex: 1, flexDirection: 'column' }}>
+                <Text
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                >
+                    {' '}{this.state.question._definition}{' '}
+                </Text>
+                <Text
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                >
+                    {' '}{this.state.question._pinyin}{' '}
+                </Text>
                 <SignatureCapture
-                    style={[{flex:1},styles.signature]}
+                    style={[{ flex: 1 }, styles.signature]}
                     ref="sign"
                     onSaveEvent={this._onSaveEvent.bind(this)}
                     onDragEvent={this._onDragEvent}
                     saveImageFileInExtStorage={false}
                     showNativeButtons={false}
                     showTitleLabel={false}
-                    viewMode={"portrait"}/>
+                    viewMode={'portrait'}
+                />
 
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                    <TouchableHighlight style={styles.buttonStyle}
-                                        onPress={() => { this.saveSign() } } >
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <TouchableHighlight
+                        style={styles.buttonStyle}
+                        onPress={() => {
+                            this.saveSign();
+                        }}
+                    >
                         <Text>Save</Text>
                     </TouchableHighlight>
 
-                    <TouchableHighlight style={styles.buttonStyle}
-                                        onPress={() => { this.resetSign() } } >
+                    <TouchableHighlight
+                        style={styles.buttonStyle}
+                        onPress={() => {
+                            this.resetSign();
+                        }}
+                    >
                         <Text>Reset</Text>
                     </TouchableHighlight>
 
@@ -142,7 +167,6 @@ class Question extends Component {
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
@@ -152,10 +176,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     buttonStyle: {
-        flex: 1, justifyContent: "center", alignItems: "center", height: 50,
-        backgroundColor: "#eeeeee",
-        margin: 10
-    }
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 50,
+        backgroundColor: '#eeeeee',
+        margin: 10,
+    },
 });
 
 module.exports = { Question };
