@@ -12,33 +12,76 @@ const {
     AsyncStorage,
 } = ReactNative;
 
+import { storage } from './storageInit';
+
 class Answer extends Component {
     constructor(props) {
         super(props);
     }
 
-    _navigate(isRight) {
+    _navigate(prevQuestion) {
         const that = this;
+
         this.props.navigator.push({
             id: 'question',
             passProps: {
                 hsk_level: that.props.passProps.question.level,
-                isRight,
+                prevQuestion: prevQuestion || '',
             },
         });
     }
 
     correctAnswer() {
-        AsyncStorage.getItem(this.props.passProps.question.id)
-            .then(value =>
-                AsyncStorage.setItem(this.props.passProps.question.id, value)
-            )
-            .then(() => {});
-        this._navigate(true);
+        storage
+            .load({
+                key: `HSK${this.props.passProps.question.level}`,
+                id: this.props.passProps.question.id,
+            })
+            .then(data => {
+                if (data.right - data.wrong > 5) {
+                    storage.remove({
+                        key: `BAD_HSK${this.props.passProps.question.level}`,
+                        id: this.props.passProps.question.id,
+                    });
+                }
+
+                storage.save({
+                    key: `HSK${this.props.passProps.question.level}`,
+                    id: this.props.passProps.question.id,
+                    rawData: {
+                        right: data.right + 1,
+                        wrong: data.wrong,
+                    },
+                });
+            });
+        this._navigate();
     }
 
     wrongAnswer() {
-        this._navigate(false);
+        storage
+            .load({
+                key: `HSK${this.props.passProps.question.level}`,
+                id: this.props.passProps.question.id,
+            })
+            .then(data => {
+                if (data.right - data.wrong < 0) {
+                    storage.save({
+                        key: `BAD_HSK${this.props.passProps.question.level}`,
+                        id: this.props.passProps.question.id,
+                        rawData: '',
+                    });
+                }
+                storage.save({
+                    key: `HSK${this.props.passProps.question.level}`,
+                    id: this.props.passProps.question.id,
+                    rawData: {
+                        right: data.right,
+                        wrong: data.wrong + 1,
+                    },
+                });
+            });
+
+        this._navigate(this.props.passProps.question);
     }
 
     render() {

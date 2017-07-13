@@ -15,13 +15,17 @@ class Home extends Component {
   }
 
   saveWords(words, hskLevel) {
+    storage.save({
+      key: `HSK${hskLevel}`,
+      id: 'loaded',
+    });
     return words.forEach(word => {
       // load the weight table
       // add the ids corresponding to each HSK level
       storage.save({
         key: `HSK${hskLevel}`,
         id: word.id,
-        rawData: { acquired: false },
+        rawData: { right: 0, wrong: 0 },
       });
     });
   }
@@ -30,7 +34,7 @@ class Home extends Component {
     return storage
       .load({
         key: `HSK${hskLevel}`,
-        id: 'loaded',
+        id: 'loaded', // if the words have been already loaded to the database or not
       })
       .then()
       .catch(err => {

@@ -17,67 +17,102 @@ function getRandomInt(min, max) {
 class Question extends Component {
     constructor(props) {
         super(props);
-        this.state = { question: '', correct_answers: 0 };
+        this.state = { question: '' };
     }
 
     getQuestion() {
         const that = this;
-        return storage.getIdsForKey(`HSK${that.props.passProps.hsk_level}`);
+        if (Math.random() > 0.5) {
+            return storage.getIdsForKey(`HSK${that.props.passProps.hsk_level}`);
+        } else {
+            return storage.getIdsForKey(
+                `BAD_HSK${that.props.passProps.hsk_level}`
+            );
+        }
     }
 
     componentWillMount() {
         switch (this.props.passProps.hsk_level) {
             case 1:
                 this.getQuestion().then(ids => {
+                    const question =
+                        require(`../data/HSK1.json`).words.find(
+                            word => word.id == ids[getRandomInt(0, ids.length)]
+                        ) ||
+                        require(`../data/HSK1.json`).words[
+                            getRandomInt(0, 100)
+                        ];
                     this.setState({
-                        question: require(`../data/HSK1.json`).words[
-                            getRandomInt(0, ids.length)
-                        ],
+                        question,
                     });
                 });
                 break;
             case 2:
                 this.getQuestion().then(ids => {
+                    const question =
+                        require(`../data/HSK2.json`).words.find(
+                            word => word.id == ids[getRandomInt(0, ids.length)]
+                        ) ||
+                        require(`../data/HSK2.json`).words[
+                            getRandomInt(0, 100)
+                        ];
                     this.setState({
-                        question: require(`../data/HSK2.json`).words[
-                            getRandomInt(0, ids.length)
-                        ],
+                        question,
                     });
                 });
-                break;
             case 3:
                 this.getQuestion().then(ids => {
+                    const question =
+                        require(`../data/HSK3.json`).words.find(
+                            word => word.id == ids[getRandomInt(0, ids.length)]
+                        ) ||
+                        require(`../data/HSK3.json`).words[
+                            getRandomInt(0, 100)
+                        ];
                     this.setState({
-                        question: require(`../data/HSK3.json`).words[
-                            getRandomInt(0, ids.length)
-                        ],
+                        question,
                     });
                 });
                 break;
             case 4:
                 this.getQuestion().then(ids => {
+                    const question =
+                        require(`../data/HSK4.json`).words.find(
+                            word => word.id == ids[getRandomInt(0, ids.length)]
+                        ) ||
+                        require(`../data/HSK4.json`).words[
+                            getRandomInt(0, 100)
+                        ];
                     this.setState({
-                        question: require(`../data/HSK4.json`).words[
-                            getRandomInt(0, ids.length)
-                        ],
+                        question,
                     });
                 });
                 break;
             case 5:
                 this.getQuestion().then(ids => {
+                    const question =
+                        require(`../data/HSK5.json`).words.find(
+                            word => word.id == ids[getRandomInt(0, id.length)]
+                        ) ||
+                        require(`../data/HSK5.json`).words[
+                            getRandomInt(0, 100)
+                        ];
                     this.setState({
-                        question: require(`../data/HSK5.json`).words[
-                            getRandomInt(0, ids.length)
-                        ],
+                        question,
                     });
                 });
                 break;
             case 6:
                 this.getQuestion().then(ids => {
+                    const question =
+                        require(`../data/HSK6.json`).words.find(
+                            word => word.id == ids[getRandomInt(0, id.length)]
+                        ) ||
+                        require(`../data/HSK6.json`).words[
+                            getRandomInt(0, 100)
+                        ];
                     this.setState({
-                        question: require(`../data/HSK6.json`).words[
-                            getRandomInt(0, ids.length)
-                        ],
+                        question,
                     });
                 });
                 break;
